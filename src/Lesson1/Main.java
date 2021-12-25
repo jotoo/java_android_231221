@@ -53,9 +53,9 @@ public class Main {
         System.out.println(opa3(-1));
         System.out.println(opa3(1));
         name("Жота");
-        god(8);
-        god(300);
-        god(800);
+        printyear(8);
+        printyear(300);
+        printyear(800);
 
 
     }
@@ -105,29 +105,14 @@ public class Main {
         System.out.println("Привет " + a + "!");
     }
 
-    public static void god(int a) {
-        if (a % 100 == 0) {
-            System.out.println((a + " исключение"));
-        } else if ((a % 4 == 0) && (a % 400 == 0)) {
-            System.out.println(a + " год високосный");
-        }
 
-    }
-   /* public static boolean god1(int a)
-    {
-        if ((a % 4 == 0) || (a% 400 == 0)){
-            return true;
-        }
-        else return false;
+    public static boolean year(int a) {
+        return a % 4 == 0 && a % 100 != 0 || a % 400 == 0;
     }
 
-    public static boolean god2(int a)
-    {
-        if (a % 100 == 0){
-            return true;
-        }
-        else return false;
-    }*/
-    //2042
+    public static void printyear(int a) {
+        System.out.printf("%d год %sявляется високосным!\n", a, year(a) ? " " : "Не ");
+
+    }
 
 }
