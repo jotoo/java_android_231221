@@ -149,9 +149,12 @@ public class Main {
 
         System.out.println(maxValue(arr03));
         System.out.println(minValue(arr03));
-        int [] arr05 = {1,2,3,4,5,5,4,3,2,1};
+        int[] arr05 = {1, 2, 3, 4, 5, 5, 4, 3, 2, 1};
         System.out.println(checkBalance(arr05));
-
+        int[] arr06 = {1, 2, 3, 4, 5, 6};
+        printArr(arr06);
+        //System.out.println(Arrays.toString(shiftArr(arr06, -5)));
+        printArr(shiftArr(arr06, 5));
     }
 
 
@@ -165,7 +168,7 @@ public class Main {
     }*/
     //Домашнее задание.
 
-    public static int maxValue(int[] arr) {
+    public static int maxValue(int[] arr) {//5
         int max = arr[0];
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] > max) {
@@ -175,7 +178,7 @@ public class Main {
         return max;
     }
 
-    public static int minValue(int[] arr) {
+    public static int minValue(int[] arr) {//5
         int min = arr[0];
         for (int i = 0; i < arr.length; i++) {
             if (arr[i] < min) {
@@ -185,7 +188,7 @@ public class Main {
         return min;
     }
 
-    public static boolean checkBalance(int[] arr) {
+    public static boolean checkBalance(int[] arr) {//6
         int summ = 0;
         for (int i = 0; i < arr.length; i++) {
             summ += arr[i];
@@ -196,11 +199,31 @@ public class Main {
         }
         int sumLeft = 0;
         int i = 0;
-        while (sumLeft < summ/2){
+        while (sumLeft < summ / 2) {
             sumLeft += arr[i];
             i++;
         }
-        return sumLeft == summ/2;
+        return sumLeft == summ / 2;//6
+    }
+
+    public static int[] shiftArr(int[] arr, int n)//7
+    {
+        int k = n % arr.length + arr.length;
+        for (int i = 0; i < k; i++) {
+            int tmp = arr[arr.length - 1];
+            for (int j = arr.length - 1; j > 0; j--) {
+                arr[j] = arr[j - 1];
+            }
+            arr[0] = tmp;
+        }
+        return arr;//7
+    }
+
+    public static void printArr(int[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+
+        }
+        System.out.println(Arrays.toString(arr));
     }
 
 }
