@@ -9,7 +9,7 @@ public class XOgame {
 
     static char[][] map;
 
-    static final int SIZE = 3;
+    static final int SIZE = 5;
     static final int DOTS_TO_WIN = 4;
 
     static final char DOT_X = 'X';
@@ -23,7 +23,7 @@ public class XOgame {
         while (true) {
             humanTurn();
             printMap();
-            if (checkWin(DOT_X)) {
+            if (checkWinLines(DOT_X, DOTS_TO_WIN)) {
                 System.out.println("Вы победили!");
                 break;
             }
@@ -32,8 +32,12 @@ public class XOgame {
                 break;
             }
             aiTurn();
+            aiTurn_1_Win();
+            aiTurnWin_2();
+            aiTurn_2_Win();
+            aiTurnRandom();
             printMap();
-            if (checkWin(DOT_O)) {
+            if (checkWinLines(DOT_O, DOTS_TO_WIN)) {
                 System.out.println("Компьютер победил!");
                 break;
             }
@@ -80,7 +84,8 @@ public class XOgame {
         map[y][x] = DOT_X;
     }
 
-    public static void aiTurn() {
+    // Рандомный ход компьютера.5
+    public static void aiTurnRandom() {
         int y;
         int x;
         do {
@@ -88,6 +93,73 @@ public class XOgame {
             x = random.nextInt(SIZE);
         } while (!isCellValid(y, x));
         map[y][x] = DOT_O;
+    }
+
+    // Попытка победить самому.1
+    public static void aiTurn() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (isCellValid(i, j)) {
+                    map[i][j] = DOT_O;
+                    if (checkWinLines(DOT_O, DOTS_TO_WIN)) {
+                        return;
+                    }
+                    map[i][j] = DOT_EMPTY;
+                }
+            }
+        }
+    }
+
+    // Сбить победную линию противника, если остался 1 ход до победы.2
+
+    public static void aiTurn_1_Win() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (isCellValid(i, j)) {
+                    map[i][j] = DOT_X;
+                    if (checkWinLines(DOT_X, DOTS_TO_WIN)) {
+                        map[i][j] = DOT_O;
+                        return;
+                    }
+                    map[i][j] = DOT_EMPTY;
+                }
+            }
+        }
+    }
+
+    // Попытка победить самому, если осталось 2 хода до победы.3
+
+    public static void aiTurnWin_2() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (isCellValid(i, j)) {
+                    map[i][j] = DOT_O;
+                    if (checkWinLines(DOT_O, DOTS_TO_WIN - 1) && Math.random() < 0.5) {/*Фактор случайности, чтоб не знацыкливался в одном углу.*/
+                        return;
+                    }
+                    map[i][j] = DOT_EMPTY;
+                }
+
+            }
+
+        }
+    }
+
+    // Сбить победную линию противника, если осталось 2 хода до победы.4
+
+    public static void aiTurn_2_Win() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (isCellValid(i, j)) {
+                    map[i][j] = DOT_X;
+                    if (checkWinLines(DOT_X, DOTS_TO_WIN - 1) && Math.random() < 0.5) {/*Фактор случайности, чтоб не знацыкливался в одном углу.*/
+                        map[i][j] = DOT_O;
+                        return;
+                    }
+                    map[i][j] = DOT_EMPTY;
+                }
+            }
+        }
     }
 
     public static boolean isCellValid(int y, int x) {
@@ -107,8 +179,8 @@ public class XOgame {
         }
         return true;
     }
-
-    public static boolean checkWin(char c) {
+    // Стандарт изёвый.
+    /*public static boolean checkWin(char c) {
         if (map[0][0] == c && map[0][1] == c && map[0][2] == c) {
             return true;
         }
@@ -136,6 +208,51 @@ public class XOgame {
             return true;
         }
         return false;
+    }*/
+
+    // Не работает.
+    /*public static boolean checkWin2(char c) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (map[(SIZE - 1) - i][(SIZE - 1) - j] == c || map[i][(SIZE - 1) - j] == c) {
+                    return true;
+                } else if (map[0][j] == c || map[1][j] == c || map[2][j] == c || map[i][0] == c || map[i][1] == c || map[i][2] == c) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }*/
+    static public boolean checkLine(int cy, int cx, int vy, int vx, char dot, int dotsToWin) {
+        if (cx + vx * (dotsToWin - 1) > SIZE - 1 || cy + vy * (dotsToWin - 1) > SIZE - 1 || cy + vy * (dotsToWin - 1) < 0) {
+            return false;
+        }
+        for (int i = 0; i < dotsToWin; i++) {
+            if (map[cy + i * vy][cx + i * vx] != dot) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    static public boolean checkWinLines(char dot, int dotsToWin) {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                if (checkLine(i, j, 0, 1, dot, dotsToWin) ||
+                        checkLine(i, j, 1, 0, dot, dotsToWin) ||
+                        checkLine(i, j, 1, 1, dot, dotsToWin) ||
+                        checkLine(i, j, -1, 1, dot, dotsToWin)) {
+                    return true;
+                }
+
+
+            }
+
+        }
+        return false;
     }
 
 }
+
+
+
