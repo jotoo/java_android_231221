@@ -54,8 +54,9 @@ public class Hw3_1 {
                 "cherry", "garlic", "grape", "melon", "leak", "kiwi", "mango", "mushroom", "nut", "olive", "pea",
                 "peanut", "pear", "pepper", "pineapple", "pumpkin", "potato"};
         int b = random.nextInt(words.length);
-        System.out.println(words[b]);
-        System.out.println("Cлово! ");
+        System.out.println("Cлово " + words[b]);
+
+
         while (true) {
             System.out.println("Введите слово! ");
             String a = sc.nextLine();
