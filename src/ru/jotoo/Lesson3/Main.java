@@ -20,12 +20,12 @@ public class Main {
         //sc.close();*/
         //int d = getNumberFromScanner("Введите число от 5 до 10 : ", 5, 10);
         // System.out.println("d= " + d);
-        //int[][] arr2d = {{5, 6, 7, 8, 9}, {1, 2, 3, 4, 5}};
+        int[][] arr2d = {{5, 6, 7, 8, 9}, {1, 2, 3, 4, 5}};
         //print2DArray(arr2d);
         //int [][] arr2d2 = new int[5][5];
-        //print2DArray(arr2d2);
+        print2DArray(arr2d);
         int[] arr = {1, 22, 33, 2, 44, 55};
-        //System.out.println(arrSumm(arr));
+        System.out.println(arrSumm(arr));
         int x = random.nextInt(100) - 50;
         //System.out.println(x);
         //System.out.printf("Слово: %s, Число с плавующей запятой %5.5f, Целое число %d, Символ: %c", "Java", 3.14f, 13, 'e');
